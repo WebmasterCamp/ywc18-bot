@@ -1,23 +1,33 @@
-require('dotenv').config()
-const Discord = require('discord.js');
+import Discord, { Channel } from 'discord.js';
 const client = new Discord.Client();
 
-const commands = require('./commands')
+import {ScoreCommander} from './commands'
+
 
 // Channel ids 
 const CHANNELS = {
   SCORE_BOARD: '866272690766610442'
 }
 
-
 client.login(process.env.TOKEN)
 
 client.on('ready', () => {
-	console.log(`Logged in as ${client.user.tag}!`);
+	console.log(`Logged in as ${client.user?.tag}!`);
 });
 
 client.on('message', (msg) => {
-  if (msg.author.bot) return 
+  if (msg.author.bot) return
+
+  // get commander
+  if (msg.content.startsWith('!')) {
+    // handle with command
+    const commandtype = msg.content.substring(1)
+    console.log("Command", commandtype)
+    const command = new ScoreCommander(client, msg)
+    command.execute()
+    return
+  } 
+
   console.log('+++++++')
   console.log(JSON.stringify(msg, null, 2))
   console.log('+++++++')
@@ -28,11 +38,11 @@ client.on('message', (msg) => {
   console.log(msg.mentions)
   console.log(msg.content)
   console.log("Channel ID", msg.channel.id)
-  console.log("Role", msg.guild.roles)
+  console.log("Role", msg.guild?.roles)
   console.log('++++++++')
-  const channel = client.channels.cache.get(CHANNELS.SCORE_BOARD)
-  channel.send("Notify")
-  commands.score()
+  const channel: Channel | undefined = client.channels.cache.get(CHANNELS.SCORE_BOARD)
+  // @ts-ignore
+  channel && channel.send("Notify")
 })
 
 client.on('messageReactionAdd', async (reaction, user) => {
@@ -57,11 +67,3 @@ client.on('messageReactionAdd', async (reaction, user) => {
   // The reaction is now also fully available and the properties will be reflected accurately:
   console.log(`${reaction.count} user(s) have given the same reaction to this message!`);
  });
-
-
-client.on('interactionCreate', async interaction => {
-	if (!interaction.isCommand()) return;
-	if (interaction.commandName === 'ping') {
-		await interaction.reply('Pong!');
-	}
-});

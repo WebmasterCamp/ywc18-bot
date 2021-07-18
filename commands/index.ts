@@ -1,0 +1,1 @@
+export {ScoreCommander} from './score'
