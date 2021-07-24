@@ -9,6 +9,10 @@ const CHANNELS = {
   WEBHOOK: '868221763492905042',
 }
 
+const BOT = {
+  WEBHOOK: '868221487922942002',
+}
+
 client.login(process.env.TOKEN)
 
 client.on('ready', () => {
@@ -16,7 +20,7 @@ client.on('ready', () => {
 })
 
 client.on('message', (msg) => {
-  if (msg.channel.id === CHANNELS.WEBHOOK) {
+  if (msg.channel.id === CHANNELS.WEBHOOK && msg.author.id === BOT.WEBHOOK) {
     console.log(msg.content)
     return
   }
