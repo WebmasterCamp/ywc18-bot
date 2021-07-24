@@ -2,6 +2,7 @@ import Discord, { Channel } from 'discord.js'
 const client = new Discord.Client()
 
 import { ScoreCommander } from './commands'
+import { VerifyCamperWebhookPayload, WebhookEvent } from './interfaces'
 
 // Channel ids
 const CHANNELS = {
@@ -13,15 +14,35 @@ const BOT = {
   WEBHOOK: '868221487922942002',
 }
 
+const ROLE = {
+  CAMPER: '866203839656099850',
+}
+
 client.login(process.env.TOKEN)
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user?.tag}!`)
 })
 
-client.on('message', (msg) => {
+client.on('message', async (msg) => {
   if (msg.channel.id === CHANNELS.WEBHOOK && msg.author.id === BOT.WEBHOOK) {
-    console.log(msg.content)
+    const event: WebhookEvent = JSON.parse(msg.content)
+
+    switch (event.event) {
+      case 'verifyCamper':
+        const payload = event.payload as VerifyCamperWebhookPayload
+        const user = await msg.guild?.members.fetch(payload.discordId)
+
+        if (!user) {
+          console.error('CANNOT FIND USER')
+          return
+        }
+
+        user.roles.add(ROLE.CAMPER)
+
+        break
+    }
+
     return
   }
 
