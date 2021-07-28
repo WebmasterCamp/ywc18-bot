@@ -1,13 +1,15 @@
 import Discord, { Channel } from 'discord.js'
+import ApiClient from './api'
 const client = new Discord.Client()
 
 import { ScoreCommander } from './commands'
-import { VerifyCamperWebhookPayload, WebhookEvent } from './interfaces'
+import { SubmitEventPayload, VerifyCamperWebhookPayload, WebhookEvent } from './interfaces'
 
 // Channel ids
 const CHANNELS = {
   SCORE_BOARD: '866272690766610442',
   WEBHOOK: '868221763492905042',
+  ONBOARD: '869657086869524530' // แนะนำตัว
 }
 
 const BOT = {
@@ -16,6 +18,10 @@ const BOT = {
 
 const ROLE = {
   CAMPER: '866203839656099850',
+  ADMIN: '866200904155922452',
+  STAFF: '866204419040346142',
+  SERVER_BOOSTER: '868769186887925810',
+  EVERYONE: '866188057165037568'
 }
 
 client.login(process.env.TOKEN)
@@ -34,12 +40,14 @@ client.on('message', async (msg) => {
         const user = await msg.guild?.members.fetch(payload.discordId)
 
         if (!user) {
-          console.error('CANNOT FIND USER')
+          console.error('CANNOT FIND USER') // Case verify before join discord server
           return
         }
 
         user.roles.add(ROLE.CAMPER)
 
+        break
+      default:
         break
     }
 
@@ -47,6 +55,31 @@ client.on('message', async (msg) => {
   }
 
   if (msg.author.bot) return
+
+  const isCamper = msg.member?.roles.cache.some(r => r.id === ROLE.CAMPER)
+  if (msg.channel.id === CHANNELS.ONBOARD && isCamper) {
+    try {
+
+      const payload: SubmitEventPayload = {
+        dateTime: new Date().toISOString(),
+        content: msg.content,
+        discordId: msg.author.id,
+        channelId: msg.channel.id,
+        event: 'onboarding'
+      }
+
+      /**
+       * @todo - call an api to add new score (1 record per user)
+       */
+      // const result = await ApiClient.submitEvent(payload)
+
+      // console.log("Result", result.json())
+    } catch (error) {
+      
+    } finally{
+      return
+    }
+  }
 
   // get commander
   if (msg.content.startsWith('!')) {
@@ -58,23 +91,25 @@ client.on('message', async (msg) => {
     return
   }
 
-  console.log('+++++++')
-  console.log(JSON.stringify(msg, null, 2))
-  console.log('+++++++')
-  console.log(msg.cleanContent, msg.type, msg.author.tag, msg.content)
-  console.log('isBot', msg.author.bot)
+  console.log("[MESSAGE] Message from unlisted Group", msg.content)
 
-  console.log(msg.mentions.toJSON())
-  console.log(msg.mentions)
-  console.log(msg.content)
-  console.log('Channel ID', msg.channel.id)
-  console.log('Role', msg.guild?.roles)
-  console.log('++++++++')
+  // console.log('+++++++')
+  // console.log(JSON.stringify(msg, null, 2))
+  // console.log('+++++++')
+  // console.log(msg.cleanContent, msg.type, msg.author.tag, msg.content)
+  // console.log('isBot', msg.author.bot)
+
+  // console.log(msg.mentions.toJSON())
+  // console.log(msg.mentions)
+  // console.log(msg.content)
+  // console.log('Channel ID', msg.channel.id)
+  // console.log('Role', msg.guild?.roles)
+  // console.log('++++++++')
   const channel: Channel | undefined = client.channels.cache.get(
     CHANNELS.SCORE_BOARD
   )
   // @ts-ignore
-  channel && channel.send('Notify')
+  // channel && channel.send('Notify')
 })
 
 client.on('messageReactionAdd', async (reaction, user) => {
