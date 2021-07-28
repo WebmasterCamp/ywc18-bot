@@ -40,7 +40,7 @@ client.on('message', async (msg) => {
         const user = await msg.guild?.members.fetch(payload.discordId)
 
         if (!user) {
-          console.error('CANNOT FIND USER')
+          console.error('CANNOT FIND USER') // Case verify before join discord server
           return
         }
 
@@ -71,11 +71,13 @@ client.on('message', async (msg) => {
       /**
        * @todo - call an api to add new score (1 record per user)
        */
-      const result = await ApiClient.submitEvent(payload)
+      // const result = await ApiClient.submitEvent(payload)
 
-      console.log("Result", result.json())
+      // console.log("Result", result.json())
     } catch (error) {
       
+    } finally{
+      return
     }
   }
 
