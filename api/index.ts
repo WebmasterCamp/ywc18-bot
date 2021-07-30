@@ -8,7 +8,7 @@ class ApiClient {
      */
     return fetch('https://activity.ywc18.ywc.in.th/api/', {
       method: 'POST',
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
     })
   }
 }

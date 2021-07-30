@@ -11,9 +11,9 @@ export interface VerifyCamperWebhookPayload {
 export type EventType = 'onboarding'
 
 export interface SubmitEventPayload {
-  dateTime: string,
-  content: string,
-  discordId: string,
-  channelId: string,
+  dateTime: string
+  content: string
+  discordId: string
+  channelId: string
   event: EventType
 }

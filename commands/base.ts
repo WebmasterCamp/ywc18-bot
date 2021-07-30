@@ -1,4 +1,4 @@
-import Discord from 'discord.js';
+import Discord from 'discord.js'
 
 export abstract class BaseCommander {
   client: Discord.Client
