@@ -3,29 +3,25 @@ import ApiClient from './api'
 const client = new Discord.Client()
 
 import { ScoreCommander } from './commands'
+import { CHANNELS, BOT, ROLE } from './config'
+
 import {
   SubmitEventPayload,
   VerifyCamperWebhookPayload,
   WebhookEvent,
 } from './interfaces'
 
-// Channel ids
-const CHANNELS = {
-  SCORE_BOARD: '866272690766610442',
-  WEBHOOK: '868221763492905042',
-  ONBOARD: '869657086869524530', // แนะนำตัว
-}
-
-const BOT = {
-  WEBHOOK: '868221487922942002',
-}
-
-const ROLE = {
-  CAMPER: '866203839656099850',
-  ADMIN: '866200904155922452',
-  STAFF: '866204419040346142',
-  SERVER_BOOSTER: '868769186887925810',
-  EVERYONE: '866188057165037568',
+function createCommander(
+  command: string,
+  client: Discord.Client,
+  message: Discord.Message
+) {
+  switch (command) {
+    case 'score':
+      return new ScoreCommander(client, message)
+    default:
+      console.error('No matched commander')
+  }
 }
 
 client.login(process.env.TOKEN)
@@ -86,10 +82,12 @@ client.on('message', async (msg) => {
   // get commander
   if (msg.content.startsWith('!')) {
     // handle with command
-    const commandtype = msg.content.substring(1)
+    const commandtype = msg.content.substring(1).split(' ')[0]
     console.log('Command', commandtype)
-    const command = new ScoreCommander(client, msg)
-    command.execute()
+    const commander = createCommander(commandtype, client, msg)
+    if (commander) {
+      commander.execute()
+    }
     return
   }
 
