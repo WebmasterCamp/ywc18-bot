@@ -2,7 +2,7 @@ import Discord, { Channel } from 'discord.js'
 import ApiClient from './api'
 const client = new Discord.Client()
 
-import { ScoreCommander } from './commands'
+import { ScoreCommander, ScoreboardCommander } from './commands'
 import {
   SubmitEventPayload,
   VerifyCamperWebhookPayload,
@@ -86,11 +86,16 @@ client.on('message', async (msg) => {
   // get commander
   if (msg.content.startsWith('!')) {
     // handle with command
-    const commandtype = msg.content.substring(1)
+    const commandtype = msg.content.substring(1).split(' ')[0]
     console.log('Command', commandtype)
-    const command = new ScoreCommander(client, msg)
-    command.execute()
-    return
+    switch(commandtype) {
+      case 'score':
+        return new ScoreCommander(client, msg).execute()
+      case 'scoreboard':
+        return new ScoreboardCommander(client, msg).execute()
+      default:
+        return
+    }
   }
 
   console.log('[MESSAGE] Message from unlisted Group', msg.content)
