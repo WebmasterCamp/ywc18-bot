@@ -3,13 +3,17 @@ import ApiClient from './api'
 const client = new Discord.Client()
 
 import { ScoreCommander } from './commands'
-import { SubmitEventPayload, VerifyCamperWebhookPayload, WebhookEvent } from './interfaces'
+import {
+  SubmitEventPayload,
+  VerifyCamperWebhookPayload,
+  WebhookEvent,
+} from './interfaces'
 
 // Channel ids
 const CHANNELS = {
   SCORE_BOARD: '866272690766610442',
   WEBHOOK: '868221763492905042',
-  ONBOARD: '869657086869524530' // แนะนำตัว
+  ONBOARD: '869657086869524530', // แนะนำตัว
 }
 
 const BOT = {
@@ -21,7 +25,7 @@ const ROLE = {
   ADMIN: '866200904155922452',
   STAFF: '866204419040346142',
   SERVER_BOOSTER: '868769186887925810',
-  EVERYONE: '866188057165037568'
+  EVERYONE: '866188057165037568',
 }
 
 client.login(process.env.TOKEN)
@@ -56,16 +60,15 @@ client.on('message', async (msg) => {
 
   if (msg.author.bot) return
 
-  const isCamper = msg.member?.roles.cache.some(r => r.id === ROLE.CAMPER)
+  const isCamper = msg.member?.roles.cache.some((r) => r.id === ROLE.CAMPER)
   if (msg.channel.id === CHANNELS.ONBOARD && isCamper) {
     try {
-
       const payload: SubmitEventPayload = {
         dateTime: new Date().toISOString(),
         content: msg.content,
         discordId: msg.author.id,
         channelId: msg.channel.id,
-        event: 'onboarding'
+        event: 'onboarding',
       }
 
       /**
@@ -75,8 +78,7 @@ client.on('message', async (msg) => {
 
       // console.log("Result", result.json())
     } catch (error) {
-      
-    } finally{
+    } finally {
       return
     }
   }
@@ -91,7 +93,7 @@ client.on('message', async (msg) => {
     return
   }
 
-  console.log("[MESSAGE] Message from unlisted Group", msg.content)
+  console.log('[MESSAGE] Message from unlisted Group', msg.content)
 
   // console.log('+++++++')
   // console.log(JSON.stringify(msg, null, 2))
@@ -105,9 +107,9 @@ client.on('message', async (msg) => {
   // console.log('Channel ID', msg.channel.id)
   // console.log('Role', msg.guild?.roles)
   // console.log('++++++++')
-  const channel: Channel | undefined = client.channels.cache.get(
-    CHANNELS.SCORE_BOARD
-  )
+  // const channel: Channel | undefined = client.channels.cache.get(
+  //   CHANNELS.SCORE_BOARD
+  // )
   // @ts-ignore
   // channel && channel.send('Notify')
 })

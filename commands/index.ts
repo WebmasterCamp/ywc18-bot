@@ -1,1 +1,1 @@
-export {ScoreCommander} from './score'
+export { ScoreCommander } from './score'

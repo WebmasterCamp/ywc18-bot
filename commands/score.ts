@@ -3,17 +3,21 @@ import Discord from 'discord.js'
 import { BaseCommander } from './base'
 
 export class ScoreCommander extends BaseCommander {
-  execute() {
-    console.log("AYO")
-    const channel: Discord.Channel | undefined = this.client.channels.cache.get('866272690766610442')
+  async execute() {
+    if (this.message.channel.id !== '870694230295711835') {
+      return
+    }
 
-    // Send message to channel
-    this.message.channel.send('This is score commander!')
+    const [_command, _mention, score] = this.message.content.split(' ')
+    console.log(
+      (await this.message.guild?.members.fetch())?.array()[0].guild.roles
+    )
 
+    const user =
+      this.message.mentions.roles.first() || this.message.mentions.users.first()
+
+    console.log(user?.id)
     // Reply with mentioned
-    this.message.channel.send(`Hi, <@${'264281954499821568'}> get 112 points`)
-
-    // @ts-ignore
-    channel && channel.send('This is score commander!')
+    this.message.channel.send(`<@${user?.id}> ได้แต้มบุญเพิ่ม ${score} แต้ม`)
   }
 }
