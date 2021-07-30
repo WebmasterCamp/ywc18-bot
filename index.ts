@@ -2,7 +2,7 @@ import Discord, { Channel } from 'discord.js'
 import ApiClient from './api'
 const client = new Discord.Client()
 
-import { ScoreCommander } from './commands'
+import { ScoreCommander, ScoreboardCommander } from './commands'
 import { CHANNELS, BOT, ROLE } from './config'
 
 import {
@@ -19,6 +19,8 @@ function createCommander(
   switch (command) {
     case 'score':
       return new ScoreCommander(client, message)
+    case 'scoreboard':
+      return new ScoreboardCommander(client, message)
     default:
       console.error('No matched commander')
   }
