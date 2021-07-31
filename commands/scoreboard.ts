@@ -22,7 +22,7 @@ export class ScoreboardCommander extends BaseCommander {
 
     const [_command, query] = this.message.content.split(' ') // `!scoreboard ${individual | group | major | me}`
 
-    if (!['individual', 'group', 'group', 'me'].includes(query)) {
+    if (!['individual', 'group', 'major', 'me'].includes(query)) {
       return
     }
     try {
