@@ -27,7 +27,7 @@ export class ScoreboardCommander extends BaseCommander {
     }
     try {
       const rawFetch = await fetch(
-        `http://localhost:3000/api/scoreboard/${
+        `https://activity.ywc18.ywc.in.th/api/scoreboard/${
           ['me'].includes(query) ? 'individual' : query
         }`,
         {
