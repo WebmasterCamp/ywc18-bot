@@ -71,7 +71,7 @@ export class ScoreboardCommander extends BaseCommander {
 
         if (targetRank === undefined) {
           this.message.channel.send(
-            `<@${this.message.author.id}> ยังไม่มีคะแนนแต้มบุญ`
+            `<@${this.message.author.id}> ยังไม่มีแต้มบุญ`
           )
         } else {
           const getUpperLimit = (rank: number) => (rank - 2 <= 0 ? 1 : rank - 2)
