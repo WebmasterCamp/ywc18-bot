@@ -59,25 +59,27 @@ export class SuperCommander extends BaseCommander {
               await this.message.reply(
                 `Assigned ${user.displayName} with role DESIGN`
               )
-              return
+              break
+
             case 'CONTENT':
               await user.roles.add(ROLE.CONTENT)
               await this.message.reply(
                 `Assigned ${user.displayName} with role CONTENT`
               )
-              return
+              break
+
             case 'MARKETING':
               await user.roles.add(ROLE.MARKETING)
               await this.message.reply(
                 `Assigned ${user.displayName} with role MARKETING`
               )
-              return
+              break
             case 'PROGRAMMING':
               await user.roles.add(ROLE.PROGRAMMING)
               await this.message.reply(
                 `Assigned ${user.displayName} with role PROGRAMMING`
               )
-              return
+              break
           }
         }
       }
