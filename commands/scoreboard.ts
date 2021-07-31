@@ -16,7 +16,7 @@ interface ScoreboardItem {
 
 export class ScoreboardCommander extends BaseCommander {
   async execute() {
-    if (this.message.channel.id !== CHANNELS.COMMANDER) {
+    if (this.message.channel.id !== CHANNELS.SCOERBOARD) {
       return
     }
 
@@ -38,7 +38,7 @@ export class ScoreboardCommander extends BaseCommander {
       )
       const parsedFetch: ScoreboardItem[] = await rawFetch.json()
 
-      const getFields = (items: ScoreboardItem[]) => ([
+      const getFields = (items: ScoreboardItem[]) => [
         {
           name:
             query === 'individual'
@@ -49,9 +49,9 @@ export class ScoreboardCommander extends BaseCommander {
           value: items
             .map(
               (item) =>
-                `\`${item.rank.toString().padStart(2, '0')}.\` ${
-                  item.icon
-                } ${item.title}`
+                `\`${item.rank.toString().padStart(2, '0')}.\` ${item.icon} ${
+                  item.title
+                }`
             )
             .join('\n'),
           inline: true,
@@ -61,17 +61,24 @@ export class ScoreboardCommander extends BaseCommander {
           value: items.map((item) => `\`${item.score}\``).join('\n'),
           inline: true,
         },
-      ])
+      ]
 
       // find my rank
       if (query === 'me') {
-        const targetRank = parsedFetch.find(o => o.discordId == this.message.author.id)
+        const targetRank = parsedFetch.find(
+          (o) => o.discordId == this.message.author.id
+        )
 
         if (targetRank === undefined) {
-          this.message.channel.send(`<@${this.message.author.id}> ยังไม่มีคะแนนแต้มบุญ`)
+          this.message.channel.send(
+            `<@${this.message.author.id}> ยังไม่มีคะแนนแต้มบุญ`
+          )
         } else {
-          const getUpperLimit = (rank: number) => rank - 2 <= 0 ? 1 : rank - 2
-          const getLowerLimit = (rank: number) => rank + 2 <= (max(parsedFetch.map(o => o.rank)) ?? 1) ? rank + 2 : (max(parsedFetch.map(o => o.rank)) ?? 1)
+          const getUpperLimit = (rank: number) => (rank - 2 <= 0 ? 1 : rank - 2)
+          const getLowerLimit = (rank: number) =>
+            rank + 2 <= (max(parsedFetch.map((o) => o.rank)) ?? 1)
+              ? rank + 2
+              : max(parsedFetch.map((o) => o.rank)) ?? 1
 
           const filteredRank = parsedFetch.filter((o, i) => {
             // console.log({
@@ -80,12 +87,19 @@ export class ScoreboardCommander extends BaseCommander {
             //   lower: getLowerLimit(targetRank.rank),
             //   target: o.rank,
             // })
-            return getUpperLimit(targetRank.rank) <= o.rank && o.rank <= getLowerLimit(targetRank.rank)
+            return (
+              getUpperLimit(targetRank.rank) <= o.rank &&
+              o.rank <= getLowerLimit(targetRank.rank)
+            )
           })
 
           const embed = new Discord.MessageEmbed({
-            description: `<@${this.message.author.id}> อยู่อันดับที่ \`${targetRank.rank.toString().padStart(2, "0")}\``,
-            fields: getFields(filteredRank)
+            description: `<@${
+              this.message.author.id
+            }> อยู่อันดับที่ \`${targetRank.rank
+              .toString()
+              .padStart(2, '0')}\``,
+            fields: getFields(filteredRank),
           })
 
           this.message.channel.send(embed)
@@ -106,7 +120,7 @@ export class ScoreboardCommander extends BaseCommander {
           footer:
             query === 'individual'
               ? {
-                  text: 'ไม่พบชื่อตัวเองในนี้? ลอง \`!scoreboard me\` เพื่อหาอันดับตนเองดูสิ',
+                  text: 'ไม่พบชื่อตัวเองในนี้? ลอง `!scoreboard me` เพื่อหาอันดับตนเองดูสิ',
                 }
               : undefined,
           fields: getFields(rankedData),
