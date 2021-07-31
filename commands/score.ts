@@ -5,7 +5,7 @@ import { BaseCommander } from './base'
 
 export class ScoreCommander extends BaseCommander {
   async execute() {
-    if (this.message.channel.id !== CHANNELS.SCOREBOARD) {
+    if (this.message.channel.id !== CHANNELS.SCORE) {
       return
     }
 
