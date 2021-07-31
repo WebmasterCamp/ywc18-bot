@@ -4,6 +4,34 @@ import { ApiResponse, Camper } from '../interfaces'
 
 import { BaseCommander } from './base'
 
+function getGroupRoleId(group: string) {
+  switch (group) {
+    case 'A':
+      return ROLE.GROUP_A
+    case 'B':
+      return ROLE.GROUP_B
+    case 'C':
+      return ROLE.GROUP_C
+    case 'D':
+      return ROLE.GROUP_D
+    case 'E':
+      return ROLE.GROUP_E
+    case 'F':
+      return ROLE.GROUP_F
+    case 'G':
+      return ROLE.GROUP_G
+    case 'H':
+      return ROLE.GROUP_H
+    case 'I':
+      return ROLE.GROUP_I
+    case 'J':
+      return ROLE.GROUP_J
+    default:
+      console.error('[Super Commander] No matched role')
+      return null
+  }
+}
+
 export class SuperCommander extends BaseCommander {
   async execute() {
     if (this.message.channel.id !== CHANNELS.SUPERCOMMANDER) {
@@ -82,7 +110,20 @@ export class SuperCommander extends BaseCommander {
               break
           }
         }
+
+        // Assign Group
+        if (query === 'group') {
+          const roleId = getGroupRoleId(camper.group)
+          if (roleId) {
+            await user.roles.add(roleId)
+            await this.message.reply(
+              `Assigned ${user.displayName} with group ${camper.group}`
+            )
+          }
+        }
       }
+
+      await this.message.reply('Operation completed')
 
       return
     } else {
