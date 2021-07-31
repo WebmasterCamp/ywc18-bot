@@ -17,3 +17,15 @@ export interface SubmitEventPayload {
   channelId: string
   event: EventType
 }
+
+export interface Camper {
+  id: string
+  discordId: string
+  major: string
+  group: string
+}
+
+export interface ApiResponse<T> {
+  success: boolean
+  payload: T
+}
