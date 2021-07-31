@@ -24,7 +24,7 @@ export class ScoreCommander extends BaseCommander {
     const role = this.message.mentions.roles.first()
 
     if (!user && !role) {
-      await this.message.reply(`เพิ่มตะแนนไม่สำเร็จ`)
+      await this.message.reply(`เพิ่มคะแนนไม่สำเร็จ`)
       return
     }
 
@@ -73,7 +73,7 @@ export class ScoreCommander extends BaseCommander {
 
       return
     } else {
-      await this.message.reply(`เพิ่มตะแนนไม่สำเร็จ`)
+      await this.message.reply(`เพิ่มคะแนนไม่สำเร็จ`)
     }
   }
 }
