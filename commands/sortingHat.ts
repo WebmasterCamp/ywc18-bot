@@ -1,3 +1,4 @@
+import fetch from 'node-fetch'
 import { ApiResponse, Camper } from './../interfaces/index'
 /**
  * หมวดคัดสรร
