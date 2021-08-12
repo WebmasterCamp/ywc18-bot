@@ -75,8 +75,12 @@ export class SuperCommander extends BaseCommander {
       for (const camper of data.payload) {
         const user = await this.message.guild?.members.fetch(camper.discordId)
 
+        if (!camper.discordId) {
+          continue
+        }
+
         if (!user) {
-          return
+          continue
         }
 
         // Assign Major
