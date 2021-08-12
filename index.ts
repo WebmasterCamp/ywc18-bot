@@ -2,7 +2,7 @@ import Discord, { Channel } from 'discord.js'
 import ApiClient from './api'
 const client = new Discord.Client()
 
-import { ScoreCommander, ScoreboardCommander, SuperCommander } from './commands'
+import { ScoreCommander, ScoreboardCommander, SuperCommander, SortingHatCommander } from './commands'
 import { CHANNELS, BOT, ROLE } from './config'
 
 import {
@@ -23,6 +23,8 @@ function createCommander(
       return new ScoreboardCommander(client, message)
     case 'super':
       return new SuperCommander(client, message)
+    case 'sorting_hat':
+      return new SortingHatCommander(client, message)
     default:
       console.error('No matched commander')
   }
@@ -81,6 +83,14 @@ client.on('message', async (msg) => {
     } finally {
       return
     }
+  }
+
+  if (msg.channel.id === CHANNELS.SORTING_HAT && isCamper) {
+    const commander = createCommander('sorting_hat', client, msg)
+    if (commander) {
+      commander.execute()
+    }
+    return
   }
 
   // get commander
