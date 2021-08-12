@@ -21,8 +21,8 @@ export interface SubmitEventPayload {
 export interface Camper {
   id: string
   discordId: string
-  major: string
-  group: string
+  major: 'CONTENT' | 'DESIGN' | 'MARKETING' | 'PROGRAMMING'
+  group: 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J'
 }
 
 export interface ApiResponse<T> {
