@@ -53,7 +53,7 @@ export class SuperCommander extends BaseCommander {
       return
     }
 
-    if (!['group', 'major'].includes(query)) {
+    if (!['group', 'major', 'rename'].includes(query)) {
       return
     }
 
@@ -123,6 +123,19 @@ export class SuperCommander extends BaseCommander {
             await this.message.reply(
               `Assigned ${user.displayName} with group ${camper.group}`
             )
+          }
+        }
+
+        if (query === 'rename') {
+          const majorAlias = {
+            PROGRAMMING: 'PG',
+            CONTENT: 'CT',
+            MARKETING: 'MK',
+            DESIGN: 'DS'
+          }[camper.major]
+          const prefixNickname = `[${camper.group}][${majorAlias}]`
+          if (!user.nickname?.includes(prefixNickname)) {
+            user.setNickname(`[${camper.group}][${majorAlias}] ${user.nickname}`)
           }
         }
       }
