@@ -136,6 +136,9 @@ export class SuperCommander extends BaseCommander {
           const prefixNickname = `[${camper.group}][${majorAlias}]`
           if (!user.nickname?.includes(prefixNickname)) {
             user.setNickname(`[${camper.group}][${majorAlias}] ${user.nickname}`)
+            await this.message.reply(
+              `Assigned Camper nickname: [${camper.group}][${majorAlias}] ${user.nickname}`
+            )
           }
         }
       }
