@@ -106,22 +106,6 @@ client.on('message', async (msg) => {
   }
 
   console.log('[MESSAGE] Message from unlisted Group', msg.content)
-
-  // console.log('+++++++')
-  // console.log(JSON.stringify(msg, null, 2))
-  // console.log('+++++++')
-  // console.log(msg.cleanContent, msg.type, msg.author.tag, msg.content)
-  // console.log('isBot', msg.author.bot)
-
-  // console.log(msg.mentions.toJSON())
-  // console.log(msg.mentions)
-  // console.log(msg.content)
-  // console.log('Channel ID', msg.channel.id)
-  // console.log('Role', msg.guild?.roles)
-  // console.log('++++++++')
-  // const channel: Channel | undefined = client.channels.cache.get(
-  //   CHANNELS.SCORE_BOARD
-  // )
   // @ts-ignore
   // channel && channel.send('Notify')
 })
